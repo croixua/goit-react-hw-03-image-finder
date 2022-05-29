@@ -34,9 +34,12 @@ export default class Gallery extends Component {
       });
 
       fetchImages(value, page)
-        .then(data =>
-          this.setState({ images: data.hits, status: Status.RESOLVED })
-        )
+        .then(data => {
+          if (data.hits.length <= data.totalHits)
+            this.setState({ button: false });
+
+          this.setState({ images: data.hits, status: Status.RESOLVED });
+        })
         .catch(error => {
           this.setState({ error: error.message, status: Status.REJECTED });
         });
